@@ -1,4 +1,9 @@
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public class GrammarExercise {
     public static void main(String[] args) {
@@ -13,6 +18,31 @@ public class GrammarExercise {
 
     public static List<String> findCommonWordsWithSpace(String firstWordList, String secondWordList) {
         //在这编写实现代码
-        return null;
+        Pattern pattern = Pattern.compile("[^a-zA-Z,]");
+        Matcher firstMatcher = pattern.matcher(firstWordList);
+        Matcher secondMatcher = pattern.matcher(secondWordList);
+        if (firstMatcher.find() || secondMatcher.find()) {
+            throw new IllegalArgumentException("input not valid");
+        }
+
+        List<String> firstStringWords = new ArrayList<>(Arrays.asList(firstWordList.split(",")));
+        List<String> secondStringWords = new ArrayList<>(Arrays.asList(secondWordList.split(",")));
+
+        if (firstStringWords.contains("") || secondStringWords.contains("")) {
+            throw new IllegalArgumentException("input not valid");
+        }
+
+        List<String> upperSecondStringWords = secondStringWords.stream()
+                .map(String::toUpperCase)
+                .collect(Collectors.toList());
+
+        List<String> result = firstStringWords.stream()
+                .map(String::toUpperCase)
+                .filter(upperSecondStringWords::contains)
+                .distinct()
+                .sorted()
+                .map(word -> word.replace("", " ").trim())
+                .collect(Collectors.toList());
+        return result;
     }
 }
