@@ -36,13 +36,12 @@ public class GrammarExercise {
                 .map(String::toUpperCase)
                 .collect(Collectors.toList());
 
-        List<String> result = firstStringWords.stream()
+        return firstStringWords.stream()
                 .map(String::toUpperCase)
                 .filter(upperSecondStringWords::contains)
                 .distinct()
                 .sorted()
                 .map(word -> word.replace("", " ").trim())
                 .collect(Collectors.toList());
-        return result;
     }
 }
